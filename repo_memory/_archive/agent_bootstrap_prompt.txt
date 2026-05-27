@@ -1,0 +1,35 @@
+# utility_automation_v2_light agent bootstrap
+
+You are operating inside utility_automation_v2_light.
+
+Current State:
+- current_completed_task = TASK 100
+- next_task = TASK 101
+- project path: D:\utility_automation_v2_light
+
+Follow all rules and workflows defined in AGENTS.md, PROJECT_RULES.md, and AI_HANDOFF.md.
+
+Mandatory startup sequence:
+1. READ-FIRST mandatory (AGENTS.md, PROJECT_RULES.md, AI_HANDOFF.md)
+2. Serena required for repository activation (STOP if activation fails).
+3. Use repository inspection, not memory.
+
+REQUIRED FIRST RESPONSE:
+A. Serena activated? YES/NO
+B. exact files inspected
+C. task spec found? YES/NO
+D. intended scope
+E. exact files likely to change
+F. validation commands
+G. risks
+H. no code edited yet
+
+Mixed-State Exception:
+The following untracked files are expected and allowed in the working tree:
+  ai_runtime/contracts/TASK-088.json
+  ai_runtime/contracts/TASK-089.json
+  ai_runtime/inbox/TASK-088-controller-request.md
+  ai_runtime/inbox/TASK-089-controller-request.md
+
+IMPLEMENTATION RULE:
+Do not edit code until the READ-FIRST report is complete and scope is explicit.

@@ -1,0 +1,135 @@
+# Task Registry
+
+## Completed
+
+TASK 048
+- Operator Observatory
+- read-only multi-page frontend
+- GET-only governance surfaces
+
+TASK 049
+- deterministic certification pipeline
+- certification artifact generation
+- CI governance gate
+
+TASK 050-A
+- security dependency governance
+- dependency risk register
+- certification security checks
+
+TASK 050-B
+- promotion governance workflow
+- promotion eligibility evaluation
+- promotion bundle / manifest generation
+
+TASK 051-A
+- promotion gatekeeper core
+- fail-closed advisory promotion blocking
+- deterministic gatekeeper hashing
+
+TASK 051-B
+- release authorization advisory bundle
+- fail-closed release governance
+- deterministic authorization hashing
+
+TASK 051-M
+- repository-local AI memory layer
+- project state persistence
+- architecture acceleration
+
+TASK 071
+- Governance Execution Contract Layer
+
+TASK 072
+- Runtime Contract Guard Foundation
+
+TASK 073
+- Execution Contract Validator
+
+TASK 074
+- AI Runtime Contract CLI Foundation
+
+TASK 075
+- Completion Evidence Provenance Generator
+
+TASK 076
+- Runtime Evidence Standardization & Completeness Enforcement
+
+TASK 077
+- Runtime Execution Enforcement Gate
+
+TASK 078
+- Controller Request Governance
+
+TASK 079
+- Controller Request Template Generator
+
+TASK 080
+- Runtime Contract Lifecycle Inspector
+
+TASK 081
+- Controller Runtime Automation Harness
+
+TASK 082
+- Documentation Governance Consolidation
+
+TASK 083
+- AI Context Canonical Source Audit
+
+TASK 084
+- Runtime Post-Task Automation Harness
+
+TASK 085
+- Unified Runtime Control Console
+
+TASK 086
+- Interactive Runtime Operator Console UX
+
+TASK 087
+- Runtime Web Operator Console Foundation
+
+TASK 088
+- Runtime Operator Control Actions
+
+TASK 089
+- Runtime Operator Control Forms UX
+
+TASK 090
+- Runtime Progress and Evidence Viewer
+
+TASK 091
+- Runtime Task Templates / Quick Launch UX
+
+TASK 092
+- Runtime timeline and task history UX
+
+TASK 093
+- Runtime Artifact Browser UX
+
+TASK 094
+- Runtime Artifact Export UX
+
+TASK 095
+- Governance Advisory Workbench
+
+TASK 096
+- Queue Batch Workstation
+
+TASK 097
+- Runtime governance baseline reset
+
+TASK 098
+- Runtime Governance History Reconciliation (Transitional)
+
+TASK 099
+- Runtime Governance Transition (Transitional)
+
+TASK 100
+- Runtime Governance Continuity Baseline
+
+## Current Active Task
+
+TASK 101
+- AI Tools Kit Bootstrap State Refresh
+
+
