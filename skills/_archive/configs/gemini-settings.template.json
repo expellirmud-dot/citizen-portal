@@ -1,0 +1,19 @@
+{
+  "role": "executor",
+  "model": "gemini-placeholder",
+  "presets": {
+    "coding-strict": { "temperature": 0.1, "topP": 0.8 },
+    "review-strict": { "temperature": 0.0, "topP": 0.5 },
+    "frontend-balanced": { "temperature": 0.2, "topP": 0.8 },
+    "research-wide": { "temperature": 0.4, "topP": 0.9 }
+  },
+  "permissions": {
+    "file_read": "allow",
+    "file_write_workspace": "allow",
+    "shell": "ask",
+    "delete": "ask",
+    "network": "ask",
+    "git_commit_push": "ask"
+  },
+  "api_key": "GEMINI_API_KEY_PLACEHOLDER"
+}

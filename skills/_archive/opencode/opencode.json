@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "D:\\ai-tools\\ai-tools-kit\\agents\\EXECUTOR_GEMINI.md",
+    "D:\\utility_automation_v2_light\\AGENTS.md",
+    "D:\\utility_automation_v2_light\\PROJECT_RULES.md"
+  ],
+  "permission": {
+    "skill": {
+      "*": "allow"
+    },
+    "edit": "allow",
+    "bash": "ask",
+    "webfetch": "ask"
+  }
+}
