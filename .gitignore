@@ -46,3 +46,8 @@ next-env.d.ts
 dev.db
 *.db
 .prisma
+
+.codegraph/
+.cursor/
+.serena/
+opencode.json
