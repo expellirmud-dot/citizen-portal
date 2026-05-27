@@ -68,7 +68,7 @@ export default async function StaffRequestsPage() {
               {requests.map((item) => (
                 <tr key={item.id} className="border-t border-slate-100">
                   <td className="px-4 py-3 font-medium text-blue-700">
-                    {item.trackingNumber}
+                    <Link href={`/staff/requests/${item.id}`} className="hover:underline">{item.trackingNumber}</Link>
                   </td>
                   <td className="px-4 py-3 text-slate-900">{item.title}</td>
                   <td className="px-4 py-3 text-slate-600">{item.category.name}</td>
