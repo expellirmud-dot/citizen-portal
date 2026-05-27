@@ -54,25 +54,25 @@ export default async function AdminDashboardPage() {
             <p className="text-sm text-zinc-500">ตรวจสอบและอัปเดตสถานะคำร้องทั้งหมดในระบบ</p>
           </Link>
 
-          <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm opacity-60 cursor-not-allowed">
+          <Link href="/admin/users" className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:border-blue-300 hover:shadow transition-all group">
             <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-zinc-100 text-zinc-500 rounded-xl">
+              <div className="p-3 bg-zinc-100 text-zinc-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <Users className="w-6 h-6" />
               </div>
               <h2 className="font-semibold text-zinc-900">จัดการผู้ใช้งาน</h2>
             </div>
-            <p className="text-sm text-zinc-500">เพิ่ม/ลดสิทธิ์เจ้าหน้าที่ (เร็วๆ นี้)</p>
-          </div>
+            <p className="text-sm text-zinc-500">เพิ่ม/ลดสิทธิ์เจ้าหน้าที่และผู้ดูแลระบบ</p>
+          </Link>
           
-          <div className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm opacity-60 cursor-not-allowed">
+          <Link href="/admin/categories" className="bg-white p-6 rounded-2xl border border-zinc-200 shadow-sm hover:border-blue-300 hover:shadow transition-all group">
             <div className="flex items-center gap-4 mb-4">
-              <div className="p-3 bg-zinc-100 text-zinc-500 rounded-xl">
+              <div className="p-3 bg-zinc-100 text-zinc-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <Settings className="w-6 h-6" />
               </div>
               <h2 className="font-semibold text-zinc-900">ตั้งค่าหมวดหมู่</h2>
             </div>
-            <p className="text-sm text-zinc-500">จัดการหมวดหมู่คำร้อง (เร็วๆ นี้)</p>
-          </div>
+            <p className="text-sm text-zinc-500">จัดการหมวดหมู่ปัญหาและคำร้อง</p>
+          </Link>
         </div>
 
         <div className="bg-white rounded-2xl p-6 border border-zinc-200 shadow-sm">
