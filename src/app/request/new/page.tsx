@@ -105,6 +105,17 @@ export default function NewRequestPage() {
               <textarea name="description" required rows={5} className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring resize-none" placeholder="อธิบายรายละเอียดของปัญหา หรือสถานที่ที่เกิดเหตุ..." />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">แนบรูปภาพ (ถ้ามี)</label>
+              <input
+                name="attachment"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-sm text-zinc-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              <p className="mt-2 text-xs text-zinc-500">รองรับไฟล์ JPG, PNG, WEBP ขนาดไม่เกิน 5MB</p>
+            </div>
+
             {error && (
               <div className="rounded-xl bg-red-50 p-4 border border-red-200">
                 <p className="text-sm font-medium text-red-800">{error}</p>

@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
+import { promises as fs } from "fs";
+import path from "path";
+import crypto from "crypto";
 
 const requestSchema = z.object({
   citizen_name: z.string().min(2),
@@ -10,6 +13,9 @@ const requestSchema = z.object({
   title: z.string().min(3),
   description: z.string().min(10),
 });
+
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 async function generateTrackingNumber() {
   const year = new Date().getFullYear();
@@ -66,6 +72,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let attachmentPath = null;
+    const file = formData.get("attachment") as File | null;
+
+    if (file && file.size > 0) {
+      if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+        return NextResponse.json(
+          { success: false, error: { code: "INVALID_FILE_TYPE", message: "รองรับเฉพาะไฟล์รูปภาพ (JPG, PNG, WEBP)" } },
+          { status: 400 }
+        );
+      }
+      if (file.size > MAX_FILE_SIZE) {
+        return NextResponse.json(
+          { success: false, error: { code: "FILE_TOO_LARGE", message: "ขนาดไฟล์ต้องไม่เกิน 5MB" } },
+          { status: 400 }
+        );
+      }
+
+      const uploadDir = path.join(process.cwd(), "public/uploads/requests");
+      await fs.mkdir(uploadDir, { recursive: true });
+
+      const buffer = Buffer.from(await file.arrayBuffer());
+      const ext = path.extname(file.name) || (file.type === "image/png" ? ".png" : file.type === "image/webp" ? ".webp" : ".jpg");
+      const filename = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}${ext}`;
+      const filepath = path.join(uploadDir, filename);
+
+      await fs.writeFile(filepath, buffer);
+      attachmentPath = `/uploads/requests/${filename}`;
+    }
+
     const trackingNumber = await generateTrackingNumber();
 
     const created = await prisma.request.create({
@@ -77,6 +112,7 @@ export async function POST(request: NextRequest) {
         categoryId: parsed.data.category_id,
         title: parsed.data.title,
         description: parsed.data.description,
+        attachmentPath,
         currentStatus: "NEW",
         statusHistory: {
           create: {

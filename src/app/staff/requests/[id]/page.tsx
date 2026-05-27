@@ -146,6 +146,23 @@ export default async function StaffRequestDetailPage({
                     </p>
                   </div>
                 </div>
+
+                {item.attachmentPath && (
+                  <div className="mt-8">
+                    <div className="flex items-center gap-2 mb-3">
+                      <FileText className="w-5 h-5 text-zinc-400" />
+                      <h3 className="font-semibold text-zinc-900">รูปภาพแนบ</h3>
+                    </div>
+                    <div className="rounded-xl border border-zinc-200 overflow-hidden bg-zinc-50 flex items-center justify-center p-2 max-w-sm">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img 
+                        src={item.attachmentPath} 
+                        alt="รูปภาพแนบประกอบคำร้อง" 
+                        className="max-h-64 object-contain rounded-lg"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
 
