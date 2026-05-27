@@ -3,15 +3,16 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { ArrowLeft, Search } from "lucide-react";
 
-const statusText: Record<string, string> = {
-  NEW: "รับเข้าระบบ",
-  RECEIVED: "รับเรื่องแล้ว",
-  UNDER_REVIEW: "ตรวจสอบ",
-  IN_PROGRESS: "ดำเนินการ",
-  COMPLETED: "เสร็จสิ้น",
-  CLOSED: "ปิดเรื่อง",
-  REJECTED: "ไม่รับดำเนินการ",
+const statusConfig: Record<string, { label: string; color: string }> = {
+  NEW: { label: "รับเข้าระบบ", color: "bg-zinc-100 text-zinc-700 border-zinc-200" },
+  RECEIVED: { label: "รับเรื่องแล้ว", color: "bg-blue-50 text-blue-700 border-blue-200" },
+  UNDER_REVIEW: { label: "ตรวจสอบ", color: "bg-amber-50 text-amber-700 border-amber-200" },
+  IN_PROGRESS: { label: "ดำเนินการ", color: "bg-indigo-50 text-indigo-700 border-indigo-200" },
+  COMPLETED: { label: "เสร็จสิ้น", color: "bg-green-50 text-green-700 border-green-200" },
+  CLOSED: { label: "ปิดเรื่อง", color: "bg-zinc-100 text-zinc-700 border-zinc-200" },
+  REJECTED: { label: "ไม่รับดำเนินการ", color: "bg-red-50 text-red-700 border-red-200" },
 };
 
 export default async function StaffRequestsPage() {
@@ -32,66 +33,92 @@ export default async function StaffRequestsPage() {
   });
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900">
-              รายการคำร้อง
-            </h1>
-            <p className="mt-1 text-sm text-slate-600">
-              รายการคำร้องที่ประชาชนส่งเข้าระบบ
-            </p>
+    <main className="min-h-screen bg-zinc-50 flex flex-col">
+      <header className="w-full border-b border-zinc-200 bg-white sticky top-0 z-50">
+        <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link
+              href="/admin/dashboard"
+              className="text-zinc-400 hover:text-zinc-900 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <div>
+              <h1 className="text-lg font-bold tracking-tight text-zinc-900 leading-none">
+                รายการคำร้อง
+              </h1>
+            </div>
           </div>
+        </div>
+      </header>
 
-          <Link
-            href="/admin/dashboard"
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-700 hover:bg-white"
-          >
-            กลับ Dashboard
-          </Link>
+      <div className="flex-1 w-full max-w-6xl mx-auto px-6 py-8">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="relative max-w-md w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-400" />
+            <input 
+              type="text" 
+              placeholder="ค้นหาเลขคำร้อง..." 
+              className="w-full rounded-xl border border-zinc-300 pl-9 pr-4 py-2 text-sm focus-ring placeholder:text-zinc-400"
+            />
+          </div>
+          <div className="text-sm text-zinc-500 font-medium">
+            ทั้งหมด {requests.length} รายการ
+          </div>
         </div>
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-slate-50 text-slate-600">
-              <tr>
-                <th className="px-4 py-3">เลขคำร้อง</th>
-                <th className="px-4 py-3">หัวข้อ</th>
-                <th className="px-4 py-3">ประเภท</th>
-                <th className="px-4 py-3">สถานะ</th>
-                <th className="px-4 py-3">วันที่ส่ง</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {requests.map((item) => (
-                <tr key={item.id} className="border-t border-slate-100">
-                  <td className="px-4 py-3 font-medium text-blue-700">
-                    <Link href={`/staff/requests/${item.id}`} className="hover:underline">{item.trackingNumber}</Link>
-                  </td>
-                  <td className="px-4 py-3 text-slate-900">{item.title}</td>
-                  <td className="px-4 py-3 text-slate-600">{item.category.name}</td>
-                  <td className="px-4 py-3">
-                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
-                      {statusText[item.currentStatus] ?? item.currentStatus}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">
-                    {new Date(item.createdAt).toLocaleDateString("th-TH")}
-                  </td>
-                </tr>
-              ))}
-
-              {requests.length === 0 && (
+        <div className="bg-white border border-zinc-200 shadow-sm rounded-2xl overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm whitespace-nowrap">
+              <thead className="bg-zinc-50/80 border-b border-zinc-200 text-zinc-500 font-medium">
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
-                    ยังไม่มีคำร้องในระบบ
-                  </td>
+                  <th className="px-6 py-4">เลขคำร้อง</th>
+                  <th className="px-6 py-4">หัวข้อปัญหา</th>
+                  <th className="px-6 py-4">หมวดหมู่</th>
+                  <th className="px-6 py-4">สถานะ</th>
+                  <th className="px-6 py-4 text-right">วันที่แจ้ง</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-zinc-100">
+                {requests.map((item) => {
+                  const config = statusConfig[item.currentStatus] || { label: item.currentStatus, color: "bg-zinc-100 text-zinc-700 border-zinc-200" };
+                  return (
+                    <tr key={item.id} className="hover:bg-zinc-50/50 transition-colors group">
+                      <td className="px-6 py-4">
+                        <Link href={`/staff/requests/${item.id}`} className="font-mono font-medium text-blue-600 hover:underline">
+                          {item.trackingNumber}
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 font-medium text-zinc-900 max-w-[200px] truncate">
+                        <Link href={`/staff/requests/${item.id}`} className="hover:text-blue-600 transition-colors">
+                          {item.title}
+                        </Link>
+                      </td>
+                      <td className="px-6 py-4 text-zinc-500">
+                        {item.category.name}
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${config.color}`}>
+                          {config.label}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-right text-zinc-500">
+                        {new Date(item.createdAt).toLocaleDateString("th-TH")}
+                      </td>
+                    </tr>
+                  );
+                })}
+
+                {requests.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className="px-6 py-12 text-center text-zinc-500">
+                      ไม่มีรายการคำร้องในขณะนี้
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>

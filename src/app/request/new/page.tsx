@@ -2,6 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowLeft, Loader2 } from "lucide-react";
 
 type Category = {
   id: string;
@@ -47,67 +49,83 @@ export default function NewRequestPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-4 py-10">
-      <div className="mx-auto max-w-3xl rounded-2xl bg-white p-8 shadow-sm border border-slate-200">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          ยื่นคำร้องออนไลน์
-        </h1>
+    <main className="min-h-screen bg-zinc-50 py-10 px-4 flex flex-col">
+      <div className="mx-auto max-w-2xl w-full">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors mb-6">
+          <ArrowLeft className="w-4 h-4" />
+          กลับหน้าหลัก
+        </Link>
+        
+        <div className="bg-white rounded-2xl p-8 border border-zinc-200 shadow-sm">
+          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+            ยื่นคำร้องออนไลน์
+          </h1>
 
-        <p className="mt-2 text-sm text-slate-600">
-          กรุณากรอกข้อมูลให้ครบถ้วน เพื่อให้เจ้าหน้าที่สามารถดำเนินการได้อย่างถูกต้อง
-        </p>
+          <p className="mt-2 text-sm text-zinc-600">
+            กรุณากรอกข้อมูลให้ครบถ้วน เพื่อให้เจ้าหน้าที่สามารถดำเนินการได้อย่างถูกต้องและรวดเร็ว
+          </p>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-5">
-          <div>
-            <label className="text-sm font-medium text-slate-700">ชื่อ-นามสกุล</label>
-            <input name="citizen_name" required className="mt-1 w-full rounded-lg border px-3 py-2" />
-          </div>
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-2">ชื่อ-นามสกุล <span className="text-red-500">*</span></label>
+                <input name="citizen_name" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="ระบุชื่อและนามสกุล" />
+              </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">เบอร์โทรศัพท์</label>
-            <input name="citizen_phone" required className="mt-1 w-full rounded-lg border px-3 py-2" />
-          </div>
+              <div>
+                <label className="block text-sm font-medium text-zinc-700 mb-2">เบอร์โทรศัพท์ <span className="text-red-500">*</span></label>
+                <input name="citizen_phone" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="08X-XXX-XXXX" />
+              </div>
+            </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">อีเมล (ถ้ามี)</label>
-            <input name="citizen_email" type="email" className="mt-1 w-full rounded-lg border px-3 py-2" />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">อีเมล (ถ้ามี)</label>
+              <input name="citizen_email" type="email" className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="example@email.com" />
+            </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">ประเภทคำร้อง</label>
-            <select name="category_id" required className="mt-1 w-full rounded-lg border px-3 py-2">
-              <option value="">เลือกประเภทคำร้อง</option>
-              {categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">ประเภทคำร้อง <span className="text-red-500">*</span></label>
+              <select name="category_id" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 bg-white focus-ring">
+                <option value="">เลือกประเภทปัญหาที่ต้องการแจ้ง</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">หัวข้อ</label>
-            <input name="title" required className="mt-1 w-full rounded-lg border px-3 py-2" />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">หัวข้อเรื่อง <span className="text-red-500">*</span></label>
+              <input name="title" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="ระบุหัวข้อปัญหาให้ชัดเจน" />
+            </div>
 
-          <div>
-            <label className="text-sm font-medium text-slate-700">รายละเอียด</label>
-            <textarea name="description" required rows={5} className="mt-1 w-full rounded-lg border px-3 py-2" />
-          </div>
+            <div>
+              <label className="block text-sm font-medium text-zinc-700 mb-2">รายละเอียด <span className="text-red-500">*</span></label>
+              <textarea name="description" required rows={5} className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring resize-none" placeholder="อธิบายรายละเอียดของปัญหา หรือสถานที่ที่เกิดเหตุ..." />
+            </div>
 
-          {error && (
-            <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
-              {error}
-            </p>
-          )}
+            {error && (
+              <div className="rounded-xl bg-red-50 p-4 border border-red-200">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            )}
 
-          <button
-            disabled={loading}
-            className="w-full rounded-lg bg-blue-700 px-4 py-3 font-medium text-white hover:bg-blue-800 disabled:opacity-60"
-          >
-            {loading ? "กำลังส่งคำร้อง..." : "ส่งคำร้อง"}
-          </button>
-        </form>
+            <button
+              disabled={loading}
+              className="w-full flex justify-center items-center gap-2 rounded-xl bg-blue-600 px-4 py-3.5 text-base font-medium text-white shadow-sm hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed focus-ring"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  กำลังดำเนินการ...
+                </>
+              ) : (
+                "ส่งคำร้อง"
+              )}
+            </button>
+          </form>
+        </div>
       </div>
     </main>
   );
