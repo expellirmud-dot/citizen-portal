@@ -27,10 +27,32 @@ export default function NewRequestPage() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setLoading(true);
-
+    
     const form = event.currentTarget;
     const formData = new FormData(form);
+
+    // Frontend Validation
+    const phone = String(formData.get("citizen_phone") ?? "");
+    const phoneRegex = /^0[0-9]{8,9}$/;
+    if (!phoneRegex.test(phone.replace(/[- ]/g, ""))) {
+      setError("กรุณาระบุเบอร์โทรศัพท์ให้ถูกต้อง (เช่น 0812345678)");
+      return;
+    }
+
+    const file = formData.get("attachment") as File | null;
+    if (file && file.size > 0) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+      if (!allowedTypes.includes(file.type)) {
+        setError("รองรับเฉพาะไฟล์รูปภาพ JPG, PNG และ WEBP เท่านั้น");
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        setError("ขนาดไฟล์ต้องไม่เกิน 5MB");
+        return;
+      }
+    }
+
+    setLoading(true);
 
     const response = await fetch("/api/public/requests", {
       method: "POST",

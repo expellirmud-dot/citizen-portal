@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Plus, Users } from "lucide-react";
 import bcrypt from "bcryptjs";
 import { UserRole } from "@prisma/client";
 
@@ -221,8 +221,14 @@ export default async function AdminUsersPage() {
                     ))}
                     {users.length === 0 && (
                       <tr>
-                        <td colSpan={4} className="px-6 py-12 text-center text-zinc-500">
-                          ยังไม่มีผู้ใช้งาน
+                        <td colSpan={4} className="px-6 py-20 text-center">
+                          <div className="flex flex-col items-center gap-3">
+                            <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center text-zinc-400">
+                              <Users className="w-6 h-6" />
+                            </div>
+                            <div className="text-zinc-900 font-medium">ยังไม่มีผู้ใช้งานในระบบ</div>
+                            <p className="text-zinc-500 text-xs">คุณสามารถเพิ่มผู้ใช้งานใหม่ได้จากฟอร์มด้านซ้ายมือ</p>
+                          </div>
                         </td>
                       </tr>
                     )}

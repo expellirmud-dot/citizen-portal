@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { ArrowLeft, Search } from "lucide-react";
+import { ArrowLeft, Search, Inbox } from "lucide-react";
 
 const statusConfig: Record<string, { label: string; color: string }> = {
   NEW: { label: "รับเข้าระบบ", color: "bg-zinc-100 text-zinc-700 border-zinc-200" },
@@ -111,8 +111,14 @@ export default async function StaffRequestsPage() {
 
                 {requests.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-12 text-center text-zinc-500">
-                      ไม่มีรายการคำร้องในขณะนี้
+                    <td colSpan={5} className="px-6 py-20 text-center">
+                      <div className="flex flex-col items-center gap-3">
+                        <div className="w-12 h-12 bg-zinc-100 rounded-full flex items-center justify-center text-zinc-400">
+                          <Inbox className="w-6 h-6" />
+                        </div>
+                        <div className="text-zinc-900 font-medium">ไม่มีรายการคำร้องในขณะนี้</div>
+                        <p className="text-zinc-500 text-xs">เมื่อมีประชาชนแจ้งเรื่องเข้ามา รายการจะแสดงผลที่นี่</p>
+                      </div>
                     </td>
                   </tr>
                 )}

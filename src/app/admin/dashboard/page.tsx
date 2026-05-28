@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { ShieldCheck, LogOut, Users, Settings, ClipboardList, Activity, FileText } from "lucide-react";
+import { ShieldCheck, LogOut, Users, Settings, ClipboardList, Activity, FileText, Inbox } from "lucide-react";
 
 export default async function AdminDashboardPage() {
   const session = await getServerSession(authOptions);
@@ -178,8 +178,11 @@ export default async function AdminDashboardPage() {
                   </Link>
                 ))}
                 {recentRequests.length === 0 && (
-                  <div className="p-8 text-center text-zinc-500 text-sm">
-                    ยังไม่มีคำร้องในระบบ
+                  <div className="p-12 text-center">
+                    <div className="flex flex-col items-center gap-2">
+                      <Inbox className="w-8 h-8 text-zinc-300" />
+                      <p className="text-zinc-500 text-sm">ยังไม่มีคำร้องในระบบ</p>
+                    </div>
                   </div>
                 )}
               </div>
