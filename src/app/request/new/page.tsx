@@ -32,10 +32,39 @@ export default function NewRequestPage() {
     const formData = new FormData(form);
 
     // Frontend Validation
-    const phone = String(formData.get("citizen_phone") ?? "");
+    const name = String(formData.get("citizen_name") ?? "").trim();
+    if (!name) {
+      setError("กรุณากรอกชื่อ-นามสกุล");
+      return;
+    }
+
+    const phone = String(formData.get("citizen_phone") ?? "").trim();
+    if (!phone) {
+      setError("กรุณากรอกเบอร์โทรศัพท์");
+      return;
+    }
+
     const phoneRegex = /^0[0-9]{8,9}$/;
     if (!phoneRegex.test(phone.replace(/[- ]/g, ""))) {
       setError("กรุณาระบุเบอร์โทรศัพท์ให้ถูกต้อง (เช่น 0812345678)");
+      return;
+    }
+
+    const categoryId = String(formData.get("category_id") ?? "");
+    if (!categoryId) {
+      setError("กรุณาเลือกประเภทคำร้อง");
+      return;
+    }
+
+    const title = String(formData.get("title") ?? "").trim();
+    if (!title) {
+      setError("กรุณากรอกหัวข้อเรื่อง");
+      return;
+    }
+
+    const description = String(formData.get("description") ?? "").trim();
+    if (!description) {
+      setError("กรุณากรอกรายละเอียดคำร้อง");
       return;
     }
 
@@ -47,7 +76,7 @@ export default function NewRequestPage() {
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        setError("ขนาดไฟล์ต้องไม่เกิน 5MB");
+        setError("ไฟล์รูปภาพต้องมีขนาดไม่เกิน 5MB");
         return;
       }
     }
@@ -87,16 +116,29 @@ export default function NewRequestPage() {
             กรุณากรอกข้อมูลให้ครบถ้วน เพื่อให้เจ้าหน้าที่สามารถดำเนินการได้อย่างถูกต้องและรวดเร็ว
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-6" noValidate>
             <div className="grid gap-6 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-zinc-700 mb-2">ชื่อ-นามสกุล <span className="text-red-500">*</span></label>
-                <input name="citizen_name" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="ระบุชื่อและนามสกุล" />
+                <input 
+                  name="citizen_name" 
+                  className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" 
+                  placeholder="ระบุชื่อและนามสกุล" 
+                />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-zinc-700 mb-2">เบอร์โทรศัพท์ <span className="text-red-500">*</span></label>
-                <input name="citizen_phone" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="08X-XXX-XXXX" />
+                <input 
+                  name="citizen_phone" 
+                  type="tel"
+                  inputMode="numeric"
+                  onChange={(e) => {
+                    e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                  }}
+                  className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" 
+                  placeholder="08X-XXX-XXXX" 
+                />
               </div>
             </div>
 
@@ -107,7 +149,7 @@ export default function NewRequestPage() {
 
             <div>
               <label className="block text-sm font-medium text-zinc-700 mb-2">ประเภทคำร้อง <span className="text-red-500">*</span></label>
-              <select name="category_id" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 bg-white focus-ring">
+              <select name="category_id" className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 bg-white focus-ring">
                 <option value="">เลือกประเภทปัญหาที่ต้องการแจ้ง</option>
                 {categories.map((category) => (
                   <option key={category.id} value={category.id}>
@@ -119,12 +161,12 @@ export default function NewRequestPage() {
 
             <div>
               <label className="block text-sm font-medium text-zinc-700 mb-2">หัวข้อเรื่อง <span className="text-red-500">*</span></label>
-              <input name="title" required className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="ระบุหัวข้อปัญหาให้ชัดเจน" />
+              <input name="title" className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring" placeholder="ระบุหัวข้อปัญหาให้ชัดเจน" />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-zinc-700 mb-2">รายละเอียด <span className="text-red-500">*</span></label>
-              <textarea name="description" required rows={5} className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring resize-none" placeholder="อธิบายรายละเอียดของปัญหา หรือสถานที่ที่เกิดเหตุ..." />
+              <textarea name="description" rows={5} className="w-full rounded-xl border border-zinc-300 px-4 py-2.5 text-zinc-900 placeholder:text-zinc-400 focus-ring resize-none" placeholder="อธิบายรายละเอียดของปัญหา หรือสถานที่ที่เกิดเหตุ..." />
             </div>
 
             <div>
