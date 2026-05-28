@@ -246,7 +246,7 @@ async function main() {
             requestId: createdReq.id,
             previousStatus: previousStatus,
             newStatus: h.status,
-            changedByUserId: 'changedByUserId' in h ? h.changedByUserId as string : null,
+            changedByUserId: "changedByUserId" in h ? (h.changedByUserId as string) : null,
             note: h.note
           }
         });
