@@ -81,33 +81,43 @@ The data model is designed to maintain relational integrity while preserving a c
 ```mermaid
 erDiagram
     DEPARTMENT ||--o{ USER : "has many"
-    DEPARTMENT ||--o{ REQUEST : "is assigned to"
+    DEPARTMENT ||--o{ REQUEST : "assigned to"
     REQUEST_CATEGORY ||--o{ REQUEST : "classifies"
-    USER ||--o{ REQUEST_STATUS_HISTORY : "changed by"
-    REQUEST ||--o{ REQUEST_STATUS_HISTORY : "has"
-    REQUEST ||--o{ REQUEST_ATTACHMENT : "contains"
+    USER ||--o{ REQUEST_STATUS_HISTORY : "changes"
+    REQUEST ||--o{ REQUEST_STATUS_HISTORY : "has history"
 
     USER {
         string id PK
         string email
         string fullName
         string role
+        string departmentId FK
     }
 
     DEPARTMENT {
         string id PK
         string name
+        string description
     }
 
     REQUEST_CATEGORY {
         string id PK
         string name
+        string description
+        boolean isActive
     }
 
     REQUEST {
         string id PK
         string trackingNumber
+        string citizenName
+        string citizenPhone
+        string title
+        string description
+        string attachmentPath
         string currentStatus
+        string categoryId FK
+        string assignedDepartmentId FK
         datetime createdAt
     }
 
@@ -116,6 +126,9 @@ erDiagram
         string requestId FK
         string previousStatus
         string newStatus
+        string changedByUserId FK
+        string note
+        datetime changedAt
     }
 ```
 
