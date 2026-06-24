@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
-import { promises as fs } from "fs";
-import path from "path";
-import crypto from "crypto";
+import { uploadRequestAttachment } from "@/lib/supabase-storage";
 
 const requestSchema = z.object({
   citizen_name: z.string().min(2),
@@ -72,6 +70,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const trackingNumber = await generateTrackingNumber();
+
     let attachmentPath = null;
     const file = formData.get("attachment") as File | null;
 
@@ -89,19 +89,8 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const uploadDir = path.join(process.cwd(), "public/uploads/requests");
-      await fs.mkdir(uploadDir, { recursive: true });
-
-      const buffer = Buffer.from(await file.arrayBuffer());
-      const ext = path.extname(file.name) || (file.type === "image/png" ? ".png" : file.type === "image/webp" ? ".webp" : ".jpg");
-      const filename = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}${ext}`;
-      const filepath = path.join(uploadDir, filename);
-
-      await fs.writeFile(filepath, buffer);
-      attachmentPath = `/uploads/requests/${filename}`;
+      attachmentPath = await uploadRequestAttachment(file, trackingNumber);
     }
-
-    const trackingNumber = await generateTrackingNumber();
 
     const created = await prisma.request.create({
       data: {
